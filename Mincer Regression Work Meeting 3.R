@@ -165,3 +165,7 @@ quick_docx(tab2)
 GHSMincerNew3 <- lm(logsalNA ~ educnum, data=append_GHSNew %>% filter(lastyear == 0))
 GHSMincerNew3
 
+#To save dataset: 
+save(append_GHSNew, file = "append_GHSNew")
+
+
