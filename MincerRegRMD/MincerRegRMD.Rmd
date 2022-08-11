@@ -108,10 +108,10 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width 
 
 # Packages
 if(!require("tidyverse")) install.packages("tidyverse")
-library(tidyverse)
 library(stargazer)
 library(modelsummary)
 library(broom)
+library(knitr)
 
 # Data
 appendedGHS <- read.csv("/Users/mac/Desktop/Masters/Thesis Datawork/MincerRegRMD/data/appendedGHS.csv")
@@ -142,18 +142,34 @@ appendedGHS <- read.csv("/Users/mac/Desktop/Masters/Thesis Datawork/MincerRegRMD
 # Results
 
 ```{r}
-mincer2 <- lm(logsal ~ Race + prispline + secspline + terspline + AgeSq + Age + Gender + lastyear + Race*Y2009 + Race*Y2016, data = appendedGHS)
+mincer2 <- lm(logsal ~ Race + prispline + secspline + terspline + AgeSq + Age + Gender + Race*Y2005 + Race*Y2009 + Race*Y2013 + Race*Y2016, data = appendedGHS)
 
 ```
 
 
-```{r}
-mincer3 <- lm(logsal ~ Race + prispline + secspline + terspline + exp + expsq + Gender + lastyear + Race*Y2009 + Race*Y2016, data = appendedGHS)
+```{r, fig.height = 3, results='asis'}
+mincer3 <- lm(logsal ~ Race + prispline + secspline + terspline + exp + expsq + Gender + Race*Y2005 + Race*Y2009 + Race*Y2013 + Race*Y2016, data = appendedGHS)
 
-m_list <- list(WithoutExperience = mincer2, WithExperience = mincer3)
-msummary(m_list, stars=TRUE)
+stargazer(mincer2, mincer3,
+          type = 'latex',
+          
+          title = "Mincer Regressions",
+ 
+          header=FALSE, # to get rid of r package output text
+
+          single.row = TRUE, # to put coefficients and standard errors on same line
+
+          no.space = TRUE, # to remove the spaces after each line of coefficients
+
+          column.sep.width = "3pt", # to reduce column width
+
+          font.size = "small" # to make font size smaller
+
+)
 ```
 
+
+# 2002, 2009, 2016 Results
 Without Experience: 
 As shown by the positive coefficients on the race categories in the first regression column, Black South Africans had the lowest salary expectations of the race groups. White South Africans were likely to earn 90% more than Black South Africans. Indian/Asian South Africans earned just over 70% more, and Coloured South Africans earned 27.83% more. The wage gap between Black and Coloured workers increased slightly between 2002 and 2009 by 0.49%. It further increased by 0.79% by 2016. The gap between the salaries of Black workers and that of Indian/Asian and White workers decreased from 2002 to 2009 by 13.7% and 13.04% respectively. The narrowing of the gap between Black and Indian/Asian workers appear to have plateaued between 2009 and 2016. In this period, the reduction was much smaller at approximately 0.67%. The wage gap between Black and White workers increased slightly again after 2009 by 4.04%. 
 

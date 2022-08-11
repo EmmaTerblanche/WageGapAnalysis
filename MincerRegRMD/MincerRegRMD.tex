@@ -135,22 +135,6 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 
 %%% Include extra packages specified by user
-\usepackage{booktabs}
-\usepackage{siunitx}
-\newcolumntype{d}{S[input-symbols = ()]}
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{float}
-\usepackage{colortbl}
-\usepackage{pdflscape}
-\usepackage{tabu}
-\usepackage{threeparttable}
-\usepackage{threeparttablex}
-\usepackage[normalem]{ulem}
-\usepackage{makecell}
-\usepackage{xcolor}
 
 %%% Hard setting column skips for reports - this ensures greater consistency and control over the length settings in the document.
 %% page layout
@@ -262,63 +246,81 @@ Wage Gaps \sep South Africa \sep Race \\
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
-\begin{table}
-\centering
-\begin{tabular}[t]{lcc}
-\toprule
-  & WithoutExperience & WithExperience\\
-\midrule
-(Intercept) & \num{4.634}*** & \num{5.526}***\\
- & (\num{0.049}) & (\num{0.022})\\
-RaceColoured & \num{0.278}*** & \num{0.271}***\\
- & (\num{0.020}) & (\num{0.020})\\
-RaceIndian/Asian & \num{0.716}*** & \num{0.717}***\\
- & (\num{0.041}) & (\num{0.041})\\
-RaceWhite & \num{0.900}*** & \num{0.891}***\\
- & (\num{0.027}) & \vphantom{1} (\num{0.027})\\
-prispline & \num{0.042}*** & \num{0.047}***\\
- & (\num{0.003}) & \vphantom{1} (\num{0.003})\\
-secspline & \num{0.196}*** & \num{0.220}***\\
- & (\num{0.003}) & (\num{0.003})\\
-terspline & \num{0.329}*** & \num{0.349}***\\
- & (\num{0.005}) & (\num{0.005})\\
-AgeSq & \num{-0.001}*** & \\
- & (\num{0.000}) & \\
-Age & \num{0.069}*** & \\
- & (\num{0.002}) & \\
-Gender & \num{-0.391}*** & \num{-0.388}***\\
- & (\num{0.008}) & (\num{0.008})\\
-lastyear & \num{0.940}*** & \num{0.942}***\\
- & (\num{0.011}) & \vphantom{1} (\num{0.011})\\
-Y2009 & \num{0.677}*** & \num{0.679}***\\
- & (\num{0.011}) & (\num{0.011})\\
-RaceColoured × Y2009 & \num{0.049}+ & \num{0.054}*\\
- & (\num{0.027}) & (\num{0.027})\\
-RaceIndian/Asian × Y2009 & \num{-0.137}** & \num{-0.141}**\\
- & (\num{0.053}) & (\num{0.053})\\
-RaceWhite × Y2009 & \num{-0.130}*** & \num{-0.140}***\\
- & (\num{0.034}) & (\num{0.034})\\
-RaceColoured × Y2016 & \num{0.079}** & \num{0.083}**\\
- & (\num{0.030}) & (\num{0.030})\\
-RaceIndian/Asian × Y2016 & \num{-0.007} & \num{-0.017}\\
- & (\num{0.060}) & (\num{0.060})\\
-RaceWhite × Y2016 & \num{0.040} & \num{0.028}\\
- & (\num{0.036}) & (\num{0.036})\\
-exp &  & \num{0.043}***\\
- &  & (\num{0.001})\\
-expsq &  & \num{0.000}***\\
- &  & (\num{0.000})\\
-\midrule
-Num.Obs. & \num{51254} & \num{51254}\\
-R2 & \num{0.531} & \num{0.531}\\
-R2 Adj. & \num{0.531} & \num{0.530}\\
-AIC & \num{130209.1} & \num{130230.6}\\
-BIC & \num{130377.2} & \num{130398.6}\\
-RMSE & \num{0.86} & \num{0.86}\\
-\bottomrule
-\multicolumn{3}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
-\end{tabular}
+\begin{table}[!htbp] \centering 
+  \caption{Mincer Regressions} 
+  \label{} 
+\small 
+\begin{tabular}{@{\extracolsep{3pt}}lcc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{2}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-3} 
+\\[-1.8ex] & \multicolumn{2}{c}{logsal} \\ 
+\\[-1.8ex] & (1) & (2)\\ 
+\hline \\[-1.8ex] 
+ RaceColoured & 0.286$^{***}$ (0.024) & 0.280$^{***}$ (0.024) \\ 
+  RaceIndian/Asian & 0.708$^{***}$ (0.050) & 0.710$^{***}$ (0.050) \\ 
+  RaceWhite & 0.879$^{***}$ (0.032) & 0.868$^{***}$ (0.032) \\ 
+  prispline & 0.035$^{***}$ (0.002) & 0.042$^{***}$ (0.003) \\ 
+  secspline & 0.203$^{***}$ (0.002) & 0.229$^{***}$ (0.003) \\ 
+  terspline & 0.351$^{***}$ (0.005) & 0.372$^{***}$ (0.005) \\ 
+  AgeSq & $-$0.001$^{***}$ (0.00003) &  \\ 
+  Age & 0.070$^{***}$ (0.002) &  \\ 
+  exp &  & 0.046$^{***}$ (0.001) \\ 
+  expsq &  & $-$0.001$^{***}$ (0.00002) \\ 
+  Gender & $-$0.398$^{***}$ (0.007) & $-$0.395$^{***}$ (0.007) \\ 
+  Y2005 & 0.204$^{***}$ (0.014) & 0.204$^{***}$ (0.014) \\ 
+  Y2009 & 0.672$^{***}$ (0.013) & 0.674$^{***}$ (0.013) \\ 
+  Y2013 & 0.674$^{***}$ (0.014) & 0.674$^{***}$ (0.014) \\ 
+  Y2016 & 0.933$^{***}$ (0.014) & 0.933$^{***}$ (0.014) \\ 
+  RaceColoured:Y2005 & $-$0.0005 (0.032) & 0.003 (0.032) \\ 
+  RaceIndian/Asian:Y2005 & $-$0.230$^{***}$ (0.077) & $-$0.231$^{***}$ (0.077) \\ 
+  RaceWhite:Y2005 & $-$0.101$^{**}$ (0.048) & $-$0.103$^{**}$ (0.048) \\ 
+  RaceColoured:Y2009 & 0.045 (0.033) & 0.049 (0.033) \\ 
+  RaceIndian/Asian:Y2009 & $-$0.143$^{**}$ (0.064) & $-$0.146$^{**}$ (0.064) \\ 
+  RaceWhite:Y2009 & $-$0.134$^{***}$ (0.041) & $-$0.144$^{***}$ (0.041) \\ 
+  RaceColoured:Y2013 & $-$0.154$^{***}$ (0.036) & $-$0.149$^{***}$ (0.036) \\ 
+  RaceIndian/Asian:Y2013 & 1.068$^{***}$ (0.098) & 1.066$^{***}$ (0.098) \\ 
+  RaceWhite:Y2013 & 0.701$^{***}$ (0.050) & 0.693$^{***}$ (0.050) \\ 
+  RaceColoured:Y2016 & 0.074$^{**}$ (0.036) & 0.077$^{**}$ (0.036) \\ 
+  RaceIndian/Asian:Y2016 & $-$0.020 (0.073) & $-$0.031 (0.073) \\ 
+  RaceWhite:Y2016 & 0.029 (0.044) & 0.017 (0.044) \\ 
+  Constant & 4.610$^{***}$ (0.047) & 5.485$^{***}$ (0.022) \\ 
+ \hline \\[-1.8ex] 
+Observations & 80,410 & 80,410 \\ 
+R$^{2}$ & 0.427 & 0.427 \\ 
+Adjusted R$^{2}$ & 0.427 & 0.427 \\ 
+Residual Std. Error (df = 80384) & 1.049 & 1.048 \\ 
+F Statistic (df = 25; 80384) & 2,396.694$^{***}$ & 2,400.680$^{***}$ \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{2}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
 \end{table}
+
+\hypertarget{results-1}{%
+\section{2002, 2009, 2016 Results}\label{results-1}}
+
+Without Experience: As shown by the positive coefficients on the race
+categories in the first regression column, Black South Africans had the
+lowest salary expectations of the race groups. White South Africans were
+likely to earn 90\% more than Black South Africans. Indian/Asian South
+Africans earned just over 70\% more, and Coloured South Africans earned
+27.83\% more. The wage gap between Black and Coloured workers increased
+slightly between 2002 and 2009 by 0.49\%. It further increased by 0.79\%
+by 2016. The gap between the salaries of Black workers and that of
+Indian/Asian and White workers decreased from 2002 to 2009 by 13.7\% and
+13.04\% respectively. The narrowing of the gap between Black and
+Indian/Asian workers appear to have plateaued between 2009 and 2016. In
+this period, the reduction was much smaller at approximately 0.67\%. The
+wage gap between Black and White workers increased slightly again after
+2009 by 4.04\%.
+
+NOTAS: - neem aan dis ``percent'' en nie ``percentage points'' nie. -
+lyk my iets (once off) het gebeur tussen 2002 en 2009 wat die gaps baie
+kleiner gemaak het. - Weer erger na 2009
+
+With Experience: Very similar.
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
