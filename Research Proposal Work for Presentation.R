@@ -32,8 +32,6 @@ append_time %>% arrange(id,year)
 
 #Regression: 
 
-quadraticModel <- lm(happiness ~ hours + hours2, data=data)
-
 GHSMincerNew <- lm(logsal ~ education + age + age2 + Sex + Race + lastyear + lastyear*Race, data=append_GHSNew)
 
 #To export regression table 

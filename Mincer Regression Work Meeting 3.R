@@ -168,5 +168,5 @@ GHSMincerNew3
 #To save dataset: 
 save(append_GHSNew, file = "append_GHSNew")
 
-write.csv(append_GHSNew, "~/Desktop/Masters/Thesis Datawork/append_GHSNew", row.names = FALSE)
+write.csv(append_GHSNew, "~/Desktop/Masters/Thesis Datawork/append_GHSNewcsv.csv", row.names = FALSE)
 
