@@ -1,43 +1,54 @@
-# Meeting 6 Work
-
-# Packages ----
-library(dplyr)
-library(vtable)
-library(haven)
+# 2006
 
 # Read in new data ----
 
-Worker2005 <- read.csv("/Users/mac/Desktop/Masters/Thesis Datawork/MincerRegRMD/data/GHS2005Data/ghs-2005-worker-v1.4.csv", header = TRUE)
+Worker2006 <- read.csv("/Users/mac/Desktop/Masters/Thesis Datawork/Data/GHS 2006 Data/ghs-2006-worker-v1.4.csv", header = TRUE)
+Person2006 <- read.csv("/Users/mac/Desktop/Masters/Thesis Datawork/Data/GHS 2006 Data/ghs-2006-person-v1.4.csv", header = TRUE)
 
 # Create Data Set ----
 
-Worker2005 <- Worker2005 %>%
-  arrange(UqNr,PersonNR)
+Worker2006 <- Worker2006 %>%
+    arrange(uqnr,personnr)
 
-Worker2005WAP <- Worker2005[ which(Worker2005$Age > 14 & Worker2005$Age < 65),]
+Person2006 <- Person2006 %>%
+    arrange(uqnr,personnr)
+
+Worker2006WAP <- Worker2006[ which(Worker2006$age > 14 & Worker2006$age < 65),]
 ## 66k+ observations
 
-Worker2005WAPE <- Worker2005WAP[ which(Worker2005WAP$Status1 == "Employed"),]
-## 24k+ observations
+Person2006WAP <- Person2006[ which(Person2006$age > 14 & Person2006$age < 65),]
 
-Worker2005WAPES <- Worker2005WAPE ##[ which(Worker2005WAPE$Q29Salto != "Unspecified" & Worker2005WAPE$Q29Salto != "Not applicable"),]
-## 16k+ observations
+Person2006Educ <- Person2006WAP[,26]
+
+Person2006Educ <- Person2006WAP[,26] %>%
+    as.data.frame(Person2006Educ) %>%
+    mutate(uqnr = Person2006WAP$uqnr) %>%
+    mutate(personnr = Person2006WAP$personnr) %>%
+    rename("Educ" = ".")
+
+WEduc2006 <- merge(Worker2006, Person2006Educ)
+
+Worker2006WAPE <- WEduc2006[ which(WEduc2006$Status1 == "Employed"),]
+## 23k+ observations
+
+Worker2006WAPES <- Worker2006WAPE ##[ which(Worker2006WAPE$Q29Salto != "Unspecified" & Worker2006WAPE$Q29Salto != "Not applicable"),]
+## 17k+ observations
 
 
 # # New salary variable ----
-# class(Worker2005WAPES$Q29Salto)
+# class(Worker2006WAPES$Q29Salto)
 #
-# Worker2005WAPES$Q29Salto <- as.numeric(Worker2005WAPES$Q29Salto)
+# Worker2006WAPES$Q29Salto <- as.numeric(Worker2006WAPES$Q29Salto)
 #
-# Worker2005WAPES <- Worker2005WAPES %>%
-#   mutate(msal = ifelse(
-#     Q210Salp == "Per week", Q29Salto *4.2, ifelse(
-#       Q210Salp == "Annually", Q29Salto /12, Q29Salto)))
+# Worker2006WAPES <- Worker2006WAPES %>%
+#     mutate(msal = ifelse(
+#         Q210Salp == "Per week", Q29Salto *4.2, ifelse(
+#             Q210Salp == "Annually", Q29Salto /12, Q29Salto)))
 #
-# Worker2005WAPES$logsal <- log(Worker2005WAPES$msal)
+# Worker2006WAPES$logsal <- log(Worker2006WAPES$msal)
 
 # Education Variable ----
-Worker2005WAPES <- mutate(Worker2005WAPES, educnum = recode(Q19HiEdu,
+Worker2006WAPES <- mutate(Worker2006WAPES, educnum = recode(Educ,
                                                             "No schooling" = "0",
                                                             "Grade R / 0" = "0",
                                                             "Grade 1/Sub A/Class 1" = "1",
@@ -101,118 +112,140 @@ Worker2005WAPES <- mutate(Worker2005WAPES, educnum = recode(Q19HiEdu,
                                                             "Diploma with less than grade 12 / STD 10" = "11",
                                                             "Diploma / certificate with less than Grade 12 / Std 10" = "11",
                                                             "Certificate with grade 12 / STD 10" = "13",
-                                                            "Diploma with grade 12 / STD 10" = "13"))
+                                                            "Diploma with grade 12 / STD 10" = "13",
+                                                            "Grade 7/Standard 5" = "7",
+                                                            "Grade 8/Standard 6/Form 1" = "8",
+                                                            "Grade 12/Standard 10/Form 5/Matric" = "12",
+                                                            "Grade 10/Standard 8/Form 3" = "10",
+                                                            "Grade 9/Standard 7/Form 2" = "9",
+                                                            "Grade 6/Standard 4" = "6",
+                                                            "Grade 11/Standard 9/Form 4" = "11",
+                                                            "Diploma with grade 12/STD 10" = "13",
+                                                            "Grade 3/Standard 1" = "3",
+                                                            "Grade 4/Standard 2" = "4",
+                                                            "Grade R/0" = "0",
+                                                            "Grade 5/Standard 3" = "5",
+                                                            "Bachelor's Degree and Diploma" = "16",
+                                                            "Bachelor's Degree" = "15",
+                                                            "Certificate with grade 12/STD 10" = "13",
+                                                            "Diploma with less than grade 12/STD 10" = "11"))
 
-class(Worker2005WAPES$educnum)
+class(Worker2006WAPES$educnum)
 
-Worker2005WAPES$educnum <- as.numeric(Worker2005WAPES$educnum)
+Worker2006WAPES$educnum <- as.numeric(Worker2006WAPES$educnum)
 
 # Age-squared ----
-Worker2005WAPES$AgeSq <- Worker2005WAPES$Age ^2
+Worker2006WAPES$AgeSq <- Worker2006WAPES$age ^2
 
 # Gender Variable ----
-Worker2005WAPES <- Worker2005WAPES %>%
-  mutate(Worker2005WAPES, Gender1 = recode(Gender,
-                                           "Male" = 0,
-                                           "Female" = 1))
+Worker2006WAPES <- Worker2006WAPES %>%
+    mutate(Worker2006WAPES, Gender1 = recode(gender,
+                                             "Male" = 0,
+                                             "Female" = 1))
 
-Worker2005WAPES$Gender1 <- as.numeric(Worker2005WAPES$Gender1)
+Worker2006WAPES$Gender1 <- as.numeric(Worker2006WAPES$Gender1)
 
-
-# # Regression ----
-# mod1 <- lm(logsal ~ Race + educnum + Age + AgeSq + Gender1, data = Worker2005WAPES)
-# mod1 %>%
-#   summary()
 #
-# mod2 <- lm(logsal ~ Race + bs(educnum, knots = c(7,12), degree = 1) + Age + AgeSq + Gender1, data = Worker2005WAPES)
+# # Regression ----
+# mod1 <- lm(logsal ~ Race + educnum + Age + AgeSq + Gender1, data = Worker2006WAPES)
+# mod1 %>%
+#     summary()
+#
+# mod2 <- lm(logsal ~ Race + bs(educnum, knots = c(7,12), degree = 1) + Age + AgeSq + Gender1, data = Worker2006WAPES)
 # mod2 %>%
-#   summary()
+#     summary()
 #
 # library(ggplot2)
-# Worker2005WAPES %>% ggplot(aes(x = educnum, y = logsal)) + geom_smooth()
+# Worker2006WAPES %>% ggplot(aes(x = educnum, y = logsal)) + geom_smooth()
 #
 #
 # library(splines)
 
 # Create subset
 
-GHS2005 <- Worker2005WAPES[,c("UqNr", "PersonNR", "Prov", "Gender1", "Age", "Race", "Worker_wgt", "AgeSq", "educnum", "Q29Salto", "Q210Salp", "Q211Salc")]
+GHS2006 <- Worker2006WAPES[,c("uqnr", "personnr", "prov", "Gender1", "age", "race", "Worker_wgt", "AgeSq", "educnum", "Q29Salto", "Q210Salp", "Q211Salc")]
 
-GHS2005 <- GHS2005 %>%
-  rename(Weight = Worker_wgt) %>%
-  rename(Gender = Gender1) %>%
-  rename(PersonNr = PersonNR) %>%
+GHS2006 <- GHS2006 %>%
+    rename(Weight = Worker_wgt) %>%
+    rename(Gender = Gender1) %>%
+    rename(PersonNr = personnr) %>%
+    rename(UqNr = uqnr) %>%
+    rename(Prov = prov) %>%
+    rename(Age = age) %>%
     rename(TotSal = Q29Salto) %>%
     rename(SalPeriod = Q210Salp) %>%
     rename(Interval = Q211Salc)
 
+GHS2006 <- GHS2006 %>%
+    rename(Race = race)
+
 # Last Year Dummy
-GHS2005$lastyear <- c(0)
+GHS2006$lastyear <- c(0)
 
 # 2002 Dummy
-GHS2005$Y2002 <- c(0)
+GHS2006$Y2002 <- c(0)
 
 # 2003 Dummy
-GHS2005$Y2003 <- c(0)
+GHS2006$Y2003 <- c(0)
 
 # 2004 Dummy
-GHS2005$Y2004 <- c(0)
+GHS2006$Y2004 <- c(0)
 
 # 2005 Dummy
-GHS2005$Y2005 <- c(1)
+GHS2006$Y2005 <- c(0)
 
 # 2006 Dummy
-GHS2005$Y2006 <- c(0)
+GHS2006$Y2006 <- c(1)
 
 # 2007 Dummy
-GHS2005$Y2007 <- c(0)
+GHS2006$Y2007 <- c(0)
 
 # 2008 Dummy
-GHS2005$Y2008 <- c(0)
+GHS2006$Y2008 <- c(0)
 
 # 2009 Dummy
-GHS2005$Y2009 <- c(0)
+GHS2006$Y2009 <- c(0)
 
 # 2010 Dummy
-GHS2005$Y2010 <- c(0)
+GHS2006$Y2010 <- c(0)
 
 # 2011 Dummy
-GHS2005$Y2011 <- c(0)
+GHS2006$Y2011 <- c(0)
 
 # 2012 Dummy
-GHS2005$Y2012 <- c(0)
+GHS2006$Y2012 <- c(0)
 
 # 2013 Dummy
-GHS2005$Y2013 <- c(0)
+GHS2006$Y2013 <- c(0)
 
 # 2014 Dummy
-GHS2005$Y2014 <- c(0)
+GHS2006$Y2014 <- c(0)
 
 # 2015 Dummy
-GHS2005$Y2015 <- c(0)
+GHS2006$Y2015 <- c(0)
 
 # 2016 Dummy
-GHS2005$Y2016 <- c(0)
+GHS2006$Y2016 <- c(0)
 
 # 2017 Dummy
-GHS2005$Y2017 <- c(0)
+GHS2006$Y2017 <- c(0)
 
 # 2018 Dummy
-GHS2005$Y2018 <- c(0)
+GHS2006$Y2018 <- c(0)
 
 # 2019 Dummy
-GHS2005$Y2019 <- c(0)
+GHS2006$Y2019 <- c(0)
 
 # 2020 Dummy
-GHS2005$Y2020 <- c(0)
+GHS2006$Y2020 <- c(0)
 
 # 2021 Dummy
-GHS2005$Y2021 <- c(0)
+GHS2006$Y2021 <- c(0)
 
 
 
-class(GHS2005$TotSal)
-class(GHS2005$Interval)
-class(GHS2005$SalPeriod)
+class(GHS2006$TotSal)
+class(GHS2006$Interval)
+class(GHS2006$SalPeriod)
 
 
